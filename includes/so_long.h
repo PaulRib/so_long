@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 15:32:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/01/29 18:32:51 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/01/29 19:03:22 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,17 @@
 # include <stdlib.h>
 # include "../libft/libft.h"
 
-#define WIDTH 1920
-#define HEIGHT 1080
+#define WIDTH 2880
+#define HEIGHT 1620
 
 typedef struct s_props {
 	char	*wall;
 	char	*floor;
 	char	*character;
-	char 	*collectible;
+	char 	*item;
 	char 	*exit;
 	void 	*img_exit;
-	void 	*img_coll;
+	void 	*img_item;
 	void	*img_wall;
 	void 	*img_character;
 	void 	*img_floor;

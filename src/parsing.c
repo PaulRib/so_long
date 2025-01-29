@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 16:51:55 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/01/29 18:33:19 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/01/29 19:04:26 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,22 +57,25 @@ void render_map(t_vars *data, t_map *map)
 		while (x < map->width)
 		{
 			if (map->grid[y][x] == '1')
-				mlx_put_image_to_window(data->mlx, data->win, data->props.img_wall, x * 32, y * 32);
+				mlx_put_image_to_window(data->mlx, data->win, data->props.img_wall, x * 64, y * 64);
 			else if (map->grid[y][x] == '0')
-				mlx_put_image_to_window(data->mlx, data->win, data->props.img_floor, x * 32, y * 32);
+				mlx_put_image_to_window(data->mlx, data->win, data->props.img_floor, x * 64, y * 64);
 			else if (map->grid[y][x] == 'P')
 			{
-				mlx_put_image_to_window(data->mlx, data->win, data->props.img_floor, x * 32, y * 32);
-				mlx_put_image_to_window(data->mlx, data->win, data->props.img_character, x * 32, y * 32);
+				mlx_put_image_to_window(data->mlx, data->win, data->props.img_floor, x * 64, y * 64);
+				mlx_put_image_to_window(data->mlx, data->win, data->props.img_character, x * 64, y * 64);
 				map->player_x = x;
 				map->player_y = y;
 			}
 			else if (map->grid[y][x] == 'C')
-				mlx_put_image_to_window(data->mlx, data->win, data->props.img_floor, x * 32, y * 32);
+			{
+				mlx_put_image_to_window(data->mlx, data->win, data->props.img_floor, x * 64, y * 64);
+				mlx_put_image_to_window(data->mlx, data->win, data->props.img_item, x * 64, y * 64);
+			}
 			else if (map->grid[y][x] == 'E')
 			{
-				mlx_put_image_to_window(data->mlx, data->win, data->props.img_floor, x * 32, y * 32);
-				mlx_put_image_to_window(data->mlx, data->win, data->props.img_exit, x * 32, y * 32);
+				mlx_put_image_to_window(data->mlx, data->win, data->props.img_floor, x * 64, y * 64);
+				mlx_put_image_to_window(data->mlx, data->win, data->props.img_exit, x * 64, y * 64);
 			}
 			x++;
 		}

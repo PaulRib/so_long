@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 15:34:38 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/01/29 18:36:03 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/01/29 19:04:10 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,13 @@ int	destroy(t_vars *data)
 
 void 	init_texture(t_vars *data)
 {
-	data->props.height = 32;
-	data->props.width = 32;
+	data->props.height = 64;
+	data->props.width = 64;
 	data->props.wall = "./asset/wall.xpm";
 	data->props.floor = "./asset/floor.xpm";
 	data->props.character = "./asset/character.xpm";
 	data->props.exit = "./asset/exit.xpm";
+	data->props.item = "./asset/item.xpm";
 	data->props.img_wall = mlx_xpm_file_to_image(data->mlx, data->props.wall,
 							&(data->props.width), &(data->props.height));
 	data->props.img_floor = mlx_xpm_file_to_image(data->mlx, data->props.floor,
@@ -53,6 +54,8 @@ void 	init_texture(t_vars *data)
 	data->props.img_character = mlx_xpm_file_to_image(data->mlx, data->props.character,
 							&(data->props.width), &(data->props.height));
 	data->props.img_exit = mlx_xpm_file_to_image(data->mlx, data->props.exit,
+							&(data->props.width), &(data->props.height));
+	data->props.img_item = mlx_xpm_file_to_image(data->mlx, data->props.item,
 							&(data->props.width), &(data->props.height));
 }
 
