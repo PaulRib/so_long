@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 15:32:45 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/01/29 19:03:22 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/01/30 14:59:08 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ typedef struct s_props {
 	void 	*img_floor;
 	int 	height;
 	int 	width;
+	int 	height_c;
+	int 	width_c;
 }				t_props;
 
 typedef struct s_count {
@@ -55,14 +57,21 @@ typedef struct	s_vars {
 	void	*mlx;
 	void	*win;
 	void	*img;
-	t_props props;
+	t_props *props;
+	t_map 	*map;
+	t_count	*item;
 }				t_vars;
 
 
 
 int		destroy(t_vars	*data);
-int		handle_key(int keycode, t_vars *data);
 void 	init_texture(t_vars *data);
+void 	ft_free_all(t_vars *data);
+void 	free_images(t_vars *data);
+
+/*Handling key*/
+void 	handle_movement(int keycode, t_vars *data);
+int		handle_key(int keycode, t_vars *data);
 
 /*CHECK MAP*/
 int		check_map(char *filename);

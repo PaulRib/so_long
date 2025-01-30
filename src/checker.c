@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 15:03:58 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/01/29 18:13:21 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/01/30 14:38:53 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ int	check_map(char *filename)
 		return (1);
 	//check_form(argc, argv);
 	//check_valid_path(argc, argv);
+	//free (filename);
 	return (0);
 }
 
@@ -29,7 +30,9 @@ int	check_props(char *filename)
 	//size_t	line_len;
 
 	item = malloc(sizeof(t_count));
-	item->collectible = 0;
+	if (!item)
+		return (1);
+	ft_memset(item, 0, sizeof(t_count));
 	fd = open(filename, O_RDONLY);
 	if (fd == -1)
 		return (1);
@@ -38,6 +41,7 @@ int	check_props(char *filename)
 	while (line != NULL)
 	{
 		line_checker(line, item);
+		free(line);
 		line = get_next_line(fd);
 		// if (line_len != ft_strlen(line))
 		// {
@@ -46,6 +50,7 @@ int	check_props(char *filename)
 		// 	exit(1);
 		// }
 	}
+	free(line);
 	if (item->collectible <= 0 || item->exit != 1 || item->start != 1)
 	{
 		ft_putstr_fd("Error\n", 2);
