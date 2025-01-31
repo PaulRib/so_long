@@ -1,6 +1,6 @@
 NAME = so_long
 
-SRC = src/so_long.c src/checker.c src/parsing.c
+SRC = src/main.c src/parsing.c src/gameplay.c src/init.c src/utils.c
 
 OBJS = $(SRC:.c=.o)
 

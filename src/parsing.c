@@ -5,79 +5,114 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/29 16:51:55 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/01/30 15:00:15 by pribolzi         ###   ########.fr       */
+/*   Created: 2025/01/31 16:56:14 by pribolzi          #+#    #+#             */
+/*   Updated: 2025/01/31 20:28:06 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/so_long.h"
 
-t_map *init_map(char *filename, t_map *map)
+int	check_map(char *filename, t_vars *data)
 {
-	int 	fd;
-	int 	i;
+	if (check_props(filename, data) == 1)
+		return (-1);
+	// check_valid_path(argc, argv);
+	return (0);
+}
+
+int	check_props(char *filename, t_vars *data)
+{
+	char	*line;
+	int		fd;
 
 	fd = open(filename, O_RDONLY);
 	if (fd == -1)
-		return (NULL);
-	map->height = 0;
-	while (get_next_line(fd) != NULL)
-		map->height++;
-	map->grid = malloc(sizeof(char *) * (map->height + 1));
-	if (!map->grid)
-		return (NULL);
-	close(fd);
-	fd = open(filename, O_RDONLY);
-	i = 0;
-	map->grid[i] = get_next_line(fd);
-	map->width = ft_strlen(map->grid[i]);
-	i++;
-	while (1)
+		return (1);
+	line = get_next_line(fd);
+	while (line != NULL)
 	{
-		map->grid[i] = get_next_line(fd);
-		if (map->grid[i] == NULL)
-			break ;
-		i++;
+		line_checker(line, data);
+		free(line);
+		line = get_next_line(fd);
 	}
-	map->grid[i] = NULL;
-	close(fd);
-	return (map);
+	free(line);
+	if (data->item->collectible <= 0 || data->item->exit != 1
+		|| data->item->start != 1 || check_form(data) == -1
+		|| check_close(data) == -1)
+	{
+		ft_putstr_fd("Error\n", 2);
+		ft_putstr_fd("Map not valid\n", 2);
+		exit(1);
+	}
+	return (0);
 }
 
-void render_map(t_vars *data, t_map *map)
+int	check_form(t_vars *data)
 {
 	int	x;
 	int	y;
-	
-	y = 0;
-	while (y < map->height)
+	int	first_x;
+	int	height;
+
+	x = 0;
+	y = -1;
+	first_x = 0;
+	height = data->map->height;
+	while (++y < height)
 	{
-		x = 0;
-		while (x < map->width)
+		while (data->map->grid[y][x])
 		{
-			if (map->grid[y][x] == '1')
-				mlx_put_image_to_window(data->mlx, data->win, data->props->img_wall, x * 64, y * 64);
-			else if (map->grid[y][x] == '0')
-				mlx_put_image_to_window(data->mlx, data->win, data->props->img_floor, x * 64, y * 64);
-			else if (map->grid[y][x] == 'P')
-			{
-				mlx_put_image_to_window(data->mlx, data->win, data->props->img_floor, x * 64, y * 64);
-				mlx_put_image_to_window(data->mlx, data->win, data->props->img_character, x * 64, y * 64);
-				map->player_x = x;
-				map->player_y = y;
-			}
-			else if (map->grid[y][x] == 'C')
-			{
-				mlx_put_image_to_window(data->mlx, data->win, data->props->img_floor, x * 64, y * 64);
-				mlx_put_image_to_window(data->mlx, data->win, data->props->img_item, x * 64, y * 64);
-			}
-			else if (map->grid[y][x] == 'E')
-			{
-				mlx_put_image_to_window(data->mlx, data->win, data->props->img_floor, x * 64, y * 64);
-				mlx_put_image_to_window(data->mlx, data->win, data->props->img_exit, x * 64, y * 64);
-			}
+			if (data->map->grid[y][x] == '\n')
+				break ;
 			x++;
 		}
-		y++;
+		if (first_x != 0)
+		{
+			if (first_x != x)
+				return (-1);
+		}
+		first_x = x;
+	}
+	return (0);
+}
+
+int	check_close(t_vars *data)
+{
+	int	x;
+	int	y;
+
+	x = -1;
+	while (++x < data->map->width)
+		if (data->map->grid[0][x] != '1')
+			return (-1);
+	x = -1;
+	while (++x < data->map->width)
+		if (data->map->grid[data->map->height - 1][x] != '1')
+			return (-1);
+	y = -1;
+	while (++y < data->map->height)
+		if (data->map->grid[y][0] != '1')
+			return (-1);
+	y = -1;
+	while (++y < data->map->height)
+		if (data->map->grid[y][data->map->width - 1] != '1')
+			return (-1);
+	return (0);
+}
+
+void	line_checker(char *line, t_vars *data)
+{
+	int	i;
+
+	i = 0;
+	while (line[i])
+	{
+		if (line[i] == 'C')
+			data->item->collectible++;
+		if (line[i] == 'E')
+			data->item->exit++;
+		if (line[i] == 'P')
+			data->item->start++;
+		i++;
 	}
 }
