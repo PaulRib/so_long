@@ -1,6 +1,7 @@
 NAME = so_long
 
-SRC = src/main.c src/parsing.c src/gameplay.c src/init.c src/utils.c
+SRC = src/main.c src/parsing.c src/gameplay.c src/init.c src/free.c src/animation.c src/map.c\
+		src/utils.c src/flood_fill.c
 
 OBJS = $(SRC:.c=.o)
 
@@ -8,12 +9,12 @@ FLAGS = -Wall -Wextra -Werror -g
 
 LIBFT = libft/libft.a
 
-LIBS = -L minilibx-linux -lmlx -lXext -lX11 -lm
+LIBS = -lmlx -lXext -lX11 -lm
 
 CC = gcc
 
 $(NAME): $(OBJS) $(LIBFT)
-	$(CC) $(FLAGS) $(OBJS) -Lmlx_linux -lmlx_Linux -L/usr/lib -Imlx_linux -lXext -lX11 -lm -lz  $(LIBFT) -o $(NAME)
+	$(CC) $(FLAGS) $(OBJS)  $(LIBS) $(LIBFT) -o $(NAME)
 
 
 $(LIBFT):
@@ -21,10 +22,8 @@ $(LIBFT):
 
 all: $(NAME)
 
-bonus: all
-
 %.o: %.c
-	$(CC) $(FLAGS) -I/usr/include -Imlx_linux -O3 -c $< -o $@
+	$(CC) -I/usr/include $(FLAGS) -c $< -o $@
 
 
 clean:
