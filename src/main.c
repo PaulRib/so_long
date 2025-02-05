@@ -6,11 +6,21 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 16:45:24 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/02/04 18:13:58 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/02/05 18:17:21 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/so_long.h"
+
+static void loop(t_vars *data)
+{
+	init_texture(data);
+	render_map(data, data->map);
+	mlx_hook(data->win, 17, 1L << 17, &destroy, data);
+	mlx_key_hook(data->win, handle_key, data);
+	mlx_loop_hook(data->mlx, base_animation, data);
+	mlx_loop(data->mlx);
+}
 
 int	main(int argc, char **argv)
 {
@@ -31,12 +41,11 @@ int	main(int argc, char **argv)
 	if (check_map(argv[1], data) == -1)
 		destroy(data);
 	data->mlx = mlx_init();
+	if (!data->mlx)
+		destroy(data);
 	data->win = mlx_new_window(data->mlx, data->map->width * 64,
 			data->map->height * 64, "so_long");
-	init_texture(data);
-	render_map(data, data->map);
-	mlx_hook(data->win, 17, 1L << 17, &destroy, data);
-	mlx_key_hook(data->win, handle_key, data);
-	mlx_loop_hook(data->mlx, base_animation, data);
-	mlx_loop(data->mlx);
+	if(!data->win)
+		destroy(data);
+	loop(data);
 }

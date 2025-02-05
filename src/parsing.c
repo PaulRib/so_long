@@ -6,7 +6,7 @@
 /*   By: pribolzi <pribolzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 16:56:14 by pribolzi          #+#    #+#             */
-/*   Updated: 2025/02/04 19:24:43 by pribolzi         ###   ########.fr       */
+/*   Updated: 2025/02/05 18:18:36 by pribolzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,8 @@ static int check_valid_path(char *filename, t_vars *data)
 	i = 0;
 	fd = open(filename, O_RDONLY);
 	copy = malloc(sizeof(char *) * (data->map->height + 1));
+	if (!copy)
+		return (-1);
 	while (1)
 	{
 		copy[i] = get_next_line(fd);
